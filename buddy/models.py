@@ -26,13 +26,13 @@ class Reader(models.Model):
 
 class Author(models.Model):
     birth_date = models.DateField(default=timezone.now)
-    death_date = models.DateField(default=timezone.now)
+    death_date = models.DateField(null=True, blank=True)
     photo = models.ImageField(upload_to='images/', null=True, blank=True)
     name = models.CharField(max_length=50)
     auth_id = models.IntegerField(blank=False, null=False)
 
     def __str__(self):
-        return str(self) ## Potentially specify different retrun
+        return self.name ## Potentially specify different retrun
 
 class Book(models.Model):
     author = models.ForeignKey(Author, on_delete=models.RESTRICT, related_name='book_authors')
