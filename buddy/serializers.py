@@ -8,30 +8,30 @@ from rest_framework.validators import UniqueValidator
 class ReaderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reader
-        fields = ('pk', 'name', 'address', 'reader_num', 'city', 'state', 'zipcode',
+        fields = ('user', 'name', 'address', 'reader_num', 'city', 'state', 'zipcode',
                   'email', 'created_date', 'updated_date')
 
 class BookSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
-        fields = ('pk', 'author', 'book_num', 'genre', 'summary', 'publisher', 'published_date',
+        fields = ('author', 'series_num', 'genre', 'summary', 'publisher', 'published_date',
                   'page_total', 'title')
 
 class AuthorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Author
-        fields = ('pk', 'birth_date','death_date', 'photo', 'name', 'auth_id')
+        fields = ('birth_date','death_date', 'photo', 'name', 'auth_id')
 
 class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
-        fields = ('pk', 'book', 'reader', 'title', 'text', 'rating',
+        fields = ('book', 'reader', 'title', 'text', 'rating',
                   'created_date', 'edited_date')
 
 class BookBuddySerializer(serializers.ModelSerializer):
     class Meta:
         model = BookBuddy
-        fields = ('pk', 'book', 'reader', 'fav_status', 'read_status', 'read_later_status',
+        fields = ('book', 'reader', 'fav_status', 'read_status', 'read_later_status',
                   'currently_reading', 'current_page', 'last_read')
 
 
@@ -75,4 +75,4 @@ class RegisterSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('pk', 'username', 'is_superuser', 'first_name', 'last_name', 'email')
+        fields = ('id', 'username', 'is_superuser', 'first_name', 'last_name', 'email')

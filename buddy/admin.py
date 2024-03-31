@@ -2,16 +2,16 @@ from django.contrib import admin
 from .models import Reader, Book, Author, Review, BookBuddy
 
 class ReaderList(admin.ModelAdmin):
-    list_display = ('pk','reader_num', 'name', 'address', 'city', 'state', 'zipcode', 'email', 'created_date', 'updated_date')
+    list_display = ('reader_num', 'name', 'address', 'city', 'state', 'zipcode', 'email', 'created_date', 'updated_date')
     list_filter = ('reader_num', 'name', 'city')
     search_fields = ('reader_num', 'name')
     ordering = ['reader_num']
 
 class BookList(admin.ModelAdmin):
-    list_display = ('author', 'book_num', 'genre', 'summary', 'publisher', 'published_date', 'page_total', 'title')
-    list_filter = ('author', 'genre', 'book_num')
-    search_fields = ('book_num', 'author', 'genre')
-    ordering = ['book_num']
+    list_display = ('author', 'series_num', 'genre', 'summary', 'publisher', 'published_date', 'page_total', 'title')
+    list_filter = ('author', 'genre', 'series_num')
+    search_fields = ('series_num', 'author', 'genre')
+    ordering = ['series_num']
 
 class AuthorList(admin.ModelAdmin):
     list_display = ('name','photo', 'birth_date', 'death_date', 'auth_id')

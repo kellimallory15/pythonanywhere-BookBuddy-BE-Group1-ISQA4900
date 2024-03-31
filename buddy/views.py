@@ -4,7 +4,6 @@ from .serializers import *
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 
-
 # @csrf_exempt
 @api_view(['GET', 'POST'])
 def reader_list(request):

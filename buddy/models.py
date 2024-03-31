@@ -8,35 +8,30 @@ class Reader(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='readers')
     name = models.CharField(max_length=50)
     address = models.CharField(max_length=200)
-    reader_num = models.IntegerField(blank=False, null=False)
     city = models.CharField(max_length=50)
     state = models.CharField(max_length=50)
     zipcode = models.CharField(max_length=10)
     email = models.EmailField(max_length=200)
-    created_date = models.DateTimeField(default=timezone.now)
-    updated_date = models.DateTimeField(auto_now_add=True)
+    created_date = models.DateTimeField(auto_now_add=True)
+    updated_date = models.DateTimeField(auto_now=True)
+    reader_num = models.AutoField(primary_key=True)
 
-    def created(self):
-        self.created_date = timezone.now()
-        self.save()
-
-    def updated(self):
-        self.updated_date = timezone.now()
-        self.save()
+    def __str__(self):
+        return self.name
 
 class Author(models.Model):
     birth_date = models.DateField(default=timezone.now)
     death_date = models.DateField(null=True, blank=True)
     photo = models.ImageField(upload_to='images/', null=True, blank=True)
     name = models.CharField(max_length=50)
-    auth_id = models.IntegerField(blank=False, null=False)
+    auth_id = models.AutoField(primary_key=True)
 
     def __str__(self):
-        return self.name ## Potentially specify different retrun
+        return f'{self.name}' ## Potentially specify different retrun
 
 class Book(models.Model):
     author = models.ForeignKey(Author, on_delete=models.RESTRICT, related_name='book_authors')
-    book_num = models.IntegerField(blank=False, null=False)
+    series_num = models.IntegerField(blank=False, null=False, validators=[MinValueValidator(1)])
     genre = models.CharField(max_length=50)
     summary = models.CharField(max_length=500)
     publisher = models.CharField(max_length=50)
@@ -45,7 +40,7 @@ class Book(models.Model):
     title = models.CharField(max_length=100)
 
     def __str__(self):
-        return str(self.author)
+        return self.title
 
 class Review(models.Model):
     book = models.ForeignKey(Book, on_delete=models.RESTRICT, related_name='book_review')
@@ -54,19 +49,11 @@ class Review(models.Model):
     text = models.CharField(max_length=1000)
     rating = models.IntegerField(blank=False, null=False, default=1,
                                  validators=[MinValueValidator(1), MaxValueValidator(5)])
-    created_date = models.DateField(default=timezone.now)
-    edited_date = models.DateField(default=timezone.now)
-
-    def created(self):
-        self.created_date = timezone.now()
-        self.save()
-
-    def updated(self):
-        self.edited_date = timezone.now()
-        self.save()
+    created_date = models.DateField(auto_now_add=True)
+    edited_date = models.DateField(null=True, blank=True)
 
     def __str__(self):
-        return str(self) ##define output potentially
+        return f'Review for "{self.book.title} by {self.reader.name}'
 
     def reader_reviews(self):
         return str(self.reader.reader_num)
@@ -79,15 +66,10 @@ class BookBuddy(models.Model):
     read_later_status = models.BooleanField(default=False, null=True)
     currently_reading = models.BooleanField(default=False, null=True)
     current_page = models.IntegerField(default=0, null=True, blank=False)
-    last_read = models.DateField(default=timezone.now)
-
-    def updated(self):
-        self.last_read = timezone.now()
-        self.save()
+    last_read = models.DateField(auto_now=True)
 
     def __str__(self):
-        return str(self)
-
+        return f'{self.reader.name} - "{self.book.title}" (Fav: {self.fav_status}, Reading: {self.currently_reading})'
 
     ## Define null statuses for above booleans // identify date modifications required for last read
 
